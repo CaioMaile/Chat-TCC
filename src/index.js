@@ -1,9 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require("electron")
 const { join } = require("path")
+import axios from 'axios'
+const api = axios.create({ baseURL: 'http://200100015/api'})
 
 app.whenReady()
     .then (() => {
-        let username = ""
+        let username = ''
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -27,5 +29,12 @@ app.whenReady()
         ipcMain.on("fechar", () => {
             app.quit()
         })
-
+        ipcMain.on("CriarUsuario", () => {
+            const nome = api.
+        })
+        ipcMain.on("AbrirChat", () => {
+            const username = api.get('')
+            const server = api.get('')
+            janela.loadFile(join(__dirname, "./public/Chat.html"))
+        })
     })
