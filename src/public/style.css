@@ -1,0 +1,114 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans");
+* {font-family: "Open Sans", sans-serif; font-size: 14pt; font-weight: 400;}
+:root { --azul: #5ccbff; --escuro: #282b30; --medio: #36393e; --claro: #696f75; --letra: #ddd;}
+body {
+    background: var(--medio);
+    color: var(--letra);  
+    display: flex;  
+    height: 100vh; 
+    margin: 0; 
+    overflow: hidden;    
+}
+
+div.menu {
+    align-items: center;
+    background: var(--escuro);
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    justify-content: center;
+    width: 32vw;
+  
+    -webkit-app-region: drag;
+  }
+  div.menu img{height: 80px; width: 80px;}
+  div.menu input {
+    background: var(--medio);
+    border: none;
+    color: var(--azul);
+    outline: none;
+    padding: 4px 0;
+    text-align: center;
+  
+    -webkit-app-region: no-drag;
+  }
+  #maior {width: 80% !important;}
+  .textoPrincipal{width: 90% !important; }
+  div.principal{display: flex; flex-direction: column; flex: 1;}
+  div.principal img{height: 100%; object-fit: contain; width: 100%;}
+  div.principal-barra{display: flex; padding: 16px;}
+  div.principal-conversa {background-image: url("./figuras.png"); background-size: cover; flex: 1; overflow-y: scroll;}
+  div.principal-barra input {
+    background: var(--escuro);
+    border: none; 
+    color: var(--azul);  
+    flex: 1;
+    outline: none;
+    padding: 4px 0;
+    text-align: center;
+  }
+  div.principal-barra button { background: var(--medio); border: none; color: var(--letra); height: 32px; width: 32px;}
+  div.principal-barra button:hover { background: var(--azul); color: var(--escuro);}
+
+  div.conversa{margin: 32px;}
+  div.conversa span{color: var(--azul);}
+
+  .fundoPrincipal{
+    align-items: center;
+    background: var(--escuro);
+    display: flex;
+    gap: 16px;
+    flex-direction: column;
+    justify-content: center;
+    width: 32vw;
+  
+    -webkit-app-region: drag;
+  }
+  div.fundoPrincipal img{height: 80px; width: 80px;}
+  div.figuras img{
+    height: 100%; width: 220px; 
+    position: relative;
+    padding-top : auto;
+    background-color: var(--escuro);
+  }
+  .sair {
+    background-color: var(--azul);
+    color: rgb(0, 0, 0) !important; 
+    font-size: 24px !important; 
+    padding: 10px !important; 
+    border-radius: 24px; 
+    border: 2px solid red;
+    transition-duration: 40ms;
+    position: absolute;
+    -webkit-app-region: no-drag;
+  }
+  .sair:hover {
+    background-color: var(--medio);
+    color: var(--azul) !important;
+  }
+  .sair:active {
+    background-color: var(--medio);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+  #sairChat{left: 4px; bottom: 8px;}
+  #sairPrincipal{bottom: 110px; }
+  .botaoGen{
+    background-color: var(--escuro);
+    color: white; 
+    font-size: 24px; 
+    padding: 5px; 
+    border-radius: 24px; 
+    border: 3px solid var(--azul);
+    -webkit-app-region: no-drag;
+  }
+  .botaoGen:hover{
+    background-color: var(--azul);
+  }
+  .botaoGen:active{
+    background-color: var(--azul);
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+  ::-webkit-scrollbar { background: var(--escuro); width: 8px;}
+  ::-webkit-scrollbar-thumb { background: var(--azul);}
