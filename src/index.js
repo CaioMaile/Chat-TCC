@@ -2,14 +2,13 @@ const { app, BrowserWindow, ipcMain } = require("electron")
 const { join } = require("path")
 const axios = require("axios")
 
-
 app.whenReady()
     .then (() => {
         let usuario = ''
         let snh = ''
 
-        const user = axios.create({baseURL: "http://127.0.0.1:3000/api/v1/user"})
-        const session = axios.create({baseURL: "http://127.0.0.1:3000//api/v1/session"})
+        const user = axios.create({baseURL: "http://200.100.0.15/api/v1/user"})
+        const session = axios.create({baseURL: "http://127.0.0.15//api/v1/session"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -33,15 +32,17 @@ app.whenReady()
         ipcMain.on("fechar", () => {
             app.quit()
         })
-        ipcMain.on("CriarUsuario", (nome, senha) => {
-            usuario = nome
-            snh = senha
+        ipcMain.on("CriarUsuario", (event, nome, senha) => {
             user.post("/create", {
-                "username": usuario,
-                "password": snh,
+                "data": { 
+                    "user": {
+                        "username": nome,
+                        "password": senha
+                    }
+                }
             })
-            console.log
-            janela.loadFile(join(__dirname, "./public/Chat.html"))
+
+            janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
         })
         ipcMain.on("AbrirChat", () => {
             const username = axios.get('')

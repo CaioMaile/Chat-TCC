@@ -13,14 +13,21 @@
         <img src="./Imagens/icon.png" alt="icone">
         <input type="text" placeholder="Nome do usuario" id="NomeL" maxlength="10">
         <input type="text" placeholder="Senha do usuario" id="SenhaL" maxlength="10">
-        <button class="botaoGen">Logar</button>
+        <button class="botaoGen" id="logar">Logar</button>
         <button class="botaoGen">Não tem uma conta?</button>
     </div>
     <div class="principal">
         <img src="./imagens/background.png" alt="fundo">
     </div>
     <script>
-        
+        const nome = document.querySelector('input[id="NomeS"]')
+        const senha = document.querySelector('input[id="SenhaS"]')
+        const logar = document.querySelector('button[id="logar"]')
+        logar.addEventListener('click', (evento) => {
+            evento.preventDefault()
+            electron.CriarUsuario(nome.value, senha.value)
+        })
+        IrParaLogin(() => {null})
     </script>
 </body>
 </html>

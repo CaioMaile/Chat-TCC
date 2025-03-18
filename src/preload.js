@@ -5,10 +5,11 @@ contextBridge.exposeInMainWorld("electron", {
     MaximizarJanela: () => {ipcRenderer.send("maximizar")},
     FecharJanela: () => {ipcRenderer.send("fechar")},
 
-    AbrirChat: (nome, codigo) => {
-        ipcRenderer.send("Abrir Papo", nome, codigo)
+    AbrirChat: (codigo) => {
+        ipcRenderer.send("Abrir Chat", codigo)
     },
     CriarUsuario: (nome, senha) => {
+        alert(nome)
         ipcRenderer.send("CriarUsuario", nome, senha)
     }
 })
