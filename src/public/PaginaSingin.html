@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Login </title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="shortcut icon" href="./Imagens/icon.png" type="img/png">
+</head>
+<body>
+    <div class="menu" id="maior">
+        Criar conta
+        <img src="./Imagens/icon.png" alt="icone">
+        <input type="text" placeholder="Nome do usuario" id="NomeS" maxlength="10">
+        <input type="text" placeholder="Senha do usuario" id="SenhaS" maxlength="10">
+        <button class="botaoGen" onclick="CriarUser()">Criar</button>
+        <button class="botaoGen" onclick="IrParaLogin()">Já tem uma conta?</button>
+    </div>
+    <div class="principal">
+        <img src="./imagens/background.png" alt="fundo">
+    </div>
+    <script>
+        const nome = document.querySelector('input[id="NomeS"]')
+        const senha = document.querySelector('input[id="SenhaS"]')
+
+        CriarUser(() => {
+            electron.CriarUsuario(nome.value, senha.value)
+        })
+        IrParaLogin(() => {null})
+    </script>
+</body>
+</html>

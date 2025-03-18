@@ -1,11 +1,15 @@
 const { app, BrowserWindow, ipcMain } = require("electron")
 const { join } = require("path")
-import axios from 'axios'
-const api = axios.create({ baseURL: 'http://200100015/api'})
+const axios = require("axios")
+
 
 app.whenReady()
     .then (() => {
-        let username = ''
+        let usuario = ''
+        let snh = ''
+
+        const user = axios.create({baseURL: "http://127.0.0.1:3000/api/v1/user"})
+        const session = axios.create({baseURL: "http://127.0.0.1:3000//api/v1/session"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -18,7 +22,7 @@ app.whenReady()
                 preload: join(__dirname, "preload.js")
             }       
         })
-        janela.loadFile( join(__dirname, "./public/PaginaPrincipal.html"))
+        janela.loadFile( join(__dirname, "./public/PaginaSingin.html"))
 
         ipcMain.on("maximizar", () => {
             janela.isMaximized() ? janela.unmaximize() : janela.maximize()
@@ -29,12 +33,19 @@ app.whenReady()
         ipcMain.on("fechar", () => {
             app.quit()
         })
-        ipcMain.on("CriarUsuario", () => {
-            const nome = api.
+        ipcMain.on("CriarUsuario", (nome, senha) => {
+            usuario = nome
+            snh = senha
+            user.post("/create", {
+                "username": usuario,
+                "password": snh,
+            })
+            console.log
+            janela.loadFile(join(__dirname, "./public/Chat.html"))
         })
         ipcMain.on("AbrirChat", () => {
-            const username = api.get('')
-            const server = api.get('')
+            const username = axios.get('')
+            const server = axios.get('')
             janela.loadFile(join(__dirname, "./public/Chat.html"))
         })
     })
