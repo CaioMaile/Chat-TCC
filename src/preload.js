@@ -9,7 +9,9 @@ contextBridge.exposeInMainWorld("electron", {
         ipcRenderer.send("Abrir Chat", codigo)
     },
     CriarUsuario: (nome, senha) => {
-        alert(nome)
         ipcRenderer.send("CriarUsuario", nome, senha)
+    },
+    LogarUsuario: (nome, senha, token) => {
+        ipcRenderer.send("LogarUsuario", nome, senha, token)
     }
 })

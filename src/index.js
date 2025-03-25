@@ -44,6 +44,9 @@ app.whenReady()
 
             janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
         })
+        ipcMain.off("LogarUsuario", (event, nome, senha, token) => {
+            user.get("")
+        })
         ipcMain.on("AbrirChat", () => {
             const username = axios.get('')
             const server = axios.get('')
