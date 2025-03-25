@@ -11,7 +11,8 @@ contextBridge.exposeInMainWorld("electron", {
     CriarUsuario: (nome, senha) => {
         ipcRenderer.send("CriarUsuario", nome, senha)
     },
-    LogarUsuario: (nome, senha, token) => {
-        ipcRenderer.send("LogarUsuario", nome, senha, token)
+    LogarUsuario: (nome, senha) => {
+        ipcRenderer.send("LogarUsuario", nome, senha)
     }
+    
 })

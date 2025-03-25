@@ -14,7 +14,7 @@
         <input type="text" placeholder="Nome do usuario" id="NomeS" maxlength="10">
         <input type="text" placeholder="Senha do usuario" id="SenhaS" maxlength="10">
         <button class="botaoGen" id="criar">Criar</button>
-        <button class="botaoGen" onclick="IrParaLogin()">Já tem uma conta?</button>
+        <button class="botaoGen" id="IrParaLogin">Já tem uma conta?</button>
     </div>
     <div class="principal">
         <img src="./imagens/background.png" alt="fundo">
@@ -23,11 +23,14 @@
         const nome = document.querySelector('input[id="NomeS"]')
         const senha = document.querySelector('input[id="SenhaS"]')
         const criar = document.querySelector('button[id="criar"]')
+        const IrLogin = document.querySelector('button[id="IrParaLogin"]')
         criar.addEventListener('click', (evento) => {
             evento.preventDefault()
             electron.CriarUsuario(nome.value, senha.value)
         })
-        IrParaLogin(() => {null})
+        IrLogin.addEventListener('click', (evento) => {
+            null
+        })
     </script>
 </body>
 </html>

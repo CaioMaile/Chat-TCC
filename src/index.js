@@ -4,11 +4,8 @@ const axios = require("axios")
 
 app.whenReady()
     .then (() => {
-        let usuario = ''
-        let snh = ''
-
-        const user = axios.create({baseURL: "http://200.100.0.15/api/v1/user"})
-        const session = axios.create({baseURL: "http://127.0.0.15//api/v1/session"})
+        const user = axios.create({baseURL: "http://200.100.0.17/api/v1/user"})
+        const session = axios.create({baseURL: "http://200.100.0.17/api/v1/session"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -21,7 +18,7 @@ app.whenReady()
                 preload: join(__dirname, "preload.js")
             }       
         })
-        janela.loadFile( join(__dirname, "./public/PaginaSingin.html"))
+        janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
 
         ipcMain.on("maximizar", () => {
             janela.isMaximized() ? janela.unmaximize() : janela.maximize()
@@ -44,8 +41,19 @@ app.whenReady()
 
             janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
         })
-        ipcMain.off("LogarUsuario", (event, nome, senha, token) => {
-            user.get("")
+        ipcMain.on("LogarUsuario", (event, nome, senha) => {
+            session.post("/create", {
+                "data": {
+                    "user": {
+                        "username": nome,
+                        "password": senha
+                    }
+                }
+            }).then((response) => {
+                console.log(response.status)
+                console.log(response.data)
+            })
+            console.log("aaa")
         })
         ipcMain.on("AbrirChat", () => {
             const username = axios.get('')

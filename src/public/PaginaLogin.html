@@ -20,14 +20,13 @@
         <img src="./imagens/background.png" alt="fundo">
     </div>
     <script>
-        const nome = document.querySelector('input[id="NomeS"]')
-        const senha = document.querySelector('input[id="SenhaS"]')
+        const nome = document.querySelector('input[id="NomeL"]')
+        const senha = document.querySelector('input[id="SenhaL"]')
         const logar = document.querySelector('button[id="logar"]')
         logar.addEventListener('click', (evento) => {
             evento.preventDefault()
-            electron.CriarUsuario(nome.value, senha.value)
+            electron.LogarUsuario(nome.value, senha.value)
         })
-        IrParaLogin(() => {null})
     </script>
 </body>
 </html>
