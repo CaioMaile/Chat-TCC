@@ -4,8 +4,10 @@ const axios = require("axios")
 
 app.whenReady()
     .then (() => {
-        const user = axios.create({baseURL: "http://127.0.0.1:3000/api/v1/user"})
-        const session = axios.create({baseURL: "http://127.0.0.1:3000/api/v1/session"})
+        const user = axios.create({baseURL: "http://200.100.0.14/api/v1/user"})
+        const session = axios.create({baseURL: "http://200.100.0.14/api/v1/session"})
+
+        const lembrarNome = ""
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -19,7 +21,7 @@ app.whenReady()
             }       
         })
         janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
-
+        
         ipcMain.on("maximizar", () => {
             janela.isMaximized() ? janela.unmaximize() : janela.maximize()
         })
@@ -52,7 +54,7 @@ app.whenReady()
             }).then((response) => {
                 console.log( response.status)
                 console.log(response.data)
-                
+                janela.loadFile(join(__dirname, "./public/PaginaPrincipal.html"))
             }).catch(console.log('erro no encontro de usuario'))
         })
         ipcMain.on("AbrirChat", () => {
@@ -64,4 +66,14 @@ app.whenReady()
             if (irPra == "Login"){janela.loadFile("./public/PaginaLogin.html")}
             else if (irPra == "Singin"){janela.loadFile("./public/PaginaSingin.html")}
         })
+        app.on("will-quit", (event) => {session.delete("/destroy", {
+            "data": {
+                "user": {
+                    "username": "Caio"
+                }
+            },
+            "session": {
+                "acess_token":"1685615042025211215"
+            }
+        })})
     })
