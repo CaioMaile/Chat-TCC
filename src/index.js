@@ -4,8 +4,8 @@ const axios = require("axios")
 
 app.whenReady()
     .then (() => {
-        const user = axios.create({baseURL: "http://200.100.0.17/api/v1/user"})
-        const session = axios.create({baseURL: "http://200.100.0.17/api/v1/session"})
+        const user = axios.create({baseURL: "http://127.0.0.1:3000/api/v1/user"})
+        const session = axios.create({baseURL: "http://127.0.0.1:3000/api/v1/session"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -50,14 +50,18 @@ app.whenReady()
                     }
                 }
             }).then((response) => {
-                console.log(response.status)
+                console.log( response.status)
                 console.log(response.data)
-            })
-            console.log("aaa")
+                
+            }).catch(console.log('erro no encontro de usuario'))
         })
         ipcMain.on("AbrirChat", () => {
             const username = axios.get('')
             const server = axios.get('')
             janela.loadFile(join(__dirname, "./public/Chat.html"))
+        })
+        ipcMain.on("MudarPagina", (Event, irPra) => {
+            if (irPra == "Login"){janela.loadFile("./public/PaginaLogin.html")}
+            else if (irPra == "Singin"){janela.loadFile("./public/PaginaSingin.html")}
         })
     })

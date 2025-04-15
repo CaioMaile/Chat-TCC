@@ -13,6 +13,8 @@ contextBridge.exposeInMainWorld("electron", {
     },
     LogarUsuario: (nome, senha) => {
         ipcRenderer.send("LogarUsuario", nome, senha)
+    },
+    MudarPagina: (irPra) => {
+        ipcRenderer.send("MudarPagina", irPra)
     }
-    
 })

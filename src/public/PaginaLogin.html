@@ -14,7 +14,7 @@
         <input type="text" placeholder="Nome do usuario" id="NomeL" maxlength="10">
         <input type="text" placeholder="Senha do usuario" id="SenhaL" maxlength="10">
         <button class="botaoGen" id="logar">Logar</button>
-        <button class="botaoGen">Não tem uma conta?</button>
+        <button class="botaoGen" id="IrParaSingin">Não tem uma conta?</button>
     </div>
     <div class="principal">
         <img src="./imagens/background.png" alt="fundo">
@@ -23,9 +23,13 @@
         const nome = document.querySelector('input[id="NomeL"]')
         const senha = document.querySelector('input[id="SenhaL"]')
         const logar = document.querySelector('button[id="logar"]')
+        const IrSingin = document.querySelector('button[id="IrParaSingin"]')
         logar.addEventListener('click', (evento) => {
             evento.preventDefault()
             electron.LogarUsuario(nome.value, senha.value)
+        })
+        IrSingin.addEventListener('click', (evento) => {
+            electron.MudarPagina("Singin")
         })
     </script>
 </body>
