@@ -16,5 +16,8 @@ contextBridge.exposeInMainWorld("electron", {
     },
     MudarPagina: (irPra) => {
         ipcRenderer.send("MudarPagina", irPra)
+    },
+    Deslogar: (a) => {
+        ipcRenderer.send("Deslogar", a)
     }
 })

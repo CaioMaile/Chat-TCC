@@ -12,17 +12,20 @@
         <img src="./Imagens/figuras.png" alt="fundo">
     </div>
     <div class="menu" id="maior">
-        <input class="textoPrincipal"><button class="botaoGen"> Criar servidor </button></input>
+        <input class="textoPrincipal"><button class="botaoGen"> Criar servidor </button>
         <p></p>
-        <input class="textoPrincipal"><button class="botaoGen">Entrar no servidor </button></input>
+        <input class="textoPrincipal"><button class="botaoGen">Entrar no servidor </button>
         <p></p>
-        <button class="sair" id="sairPrincipal">Logout</button>
+        <button class="sair" id="SairPrincipal">Logout</button>
     </div>
     <div class="figuras">
         <img src="./imagens/figuras.png" alt="fundo">
     </div>
     <script>
-        
+        const SairServ = document.querySelector('button[id="SairPrincipal"]')
+        SairServ.addEventListener('click', (event) => {
+            electron.Deslogar("a")
+        })
     </script>
 </body>
 </html>

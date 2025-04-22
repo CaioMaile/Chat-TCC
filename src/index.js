@@ -1,13 +1,13 @@
-const { app, BrowserWindow, ipcMain } = require("electron")
+const { app, BrowserWindow, ipcMain, session } = require("electron")
 const { join } = require("path")
 const axios = require("axios")
 
 app.whenReady()
     .then (() => {
-        const user = axios.create({baseURL: "http://200.100.0.14/api/v1/user"})
-        const session = axios.create({baseURL: "http://200.100.0.14/api/v1/session"})
+        const user = axios.create({baseURL: "http://200.100.0.15/api/v1/user"})
+        const sessionRota = axios.create({baseURL: "http://200.100.0.15/api/v1/session"})
 
-        const lembrarNome = ""
+        const cookie = { url: 'https://www.github.com', name: 'Usuario' }
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -20,7 +20,7 @@ app.whenReady()
                 preload: join(__dirname, "preload.js")
             }       
         })
-        janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
+        janela.loadFile( join(__dirname, "./public/PaginaPrincipal.html"))
         
         ipcMain.on("maximizar", () => {
             janela.isMaximized() ? janela.unmaximize() : janela.maximize()
@@ -44,7 +44,7 @@ app.whenReady()
             janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
         })
         ipcMain.on("LogarUsuario", (event, nome, senha) => {
-            session.post("/create", {
+            sessionRota.post("/create", {
                 "data": {
                     "user": {
                         "username": nome,
@@ -53,7 +53,22 @@ app.whenReady()
                 }
             }).then((response) => {
                 console.log( response.status)
-                console.log(response.data)
+                console.log(response.data.data)
+                
+                const cookie = { 
+                    url: 'http://www.descent.com',
+                    username: `${response.data.data.username}`, 
+                    access_token: `${response.data.data.access_token}`
+                }
+                console.log(cookie)
+                session.defaultSession.cookies.get(cookie)
+                    .then( (c) => {
+                        console.log(c)
+                    })
+                    .catch( (erro) => {
+                        console.log(erro)
+                    })
+
                 janela.loadFile(join(__dirname, "./public/PaginaPrincipal.html"))
             }).catch(console.log('erro no encontro de usuario'))
         })
@@ -66,14 +81,33 @@ app.whenReady()
             if (irPra == "Login"){janela.loadFile("./public/PaginaLogin.html")}
             else if (irPra == "Singin"){janela.loadFile("./public/PaginaSingin.html")}
         })
-        app.on("will-quit", (event) => {session.delete("/destroy", {
-            "data": {
-                "user": {
-                    "username": "Caio"
+        ipcMain.on("Deslogar", (event, a) => {
+            console.log("cookie")
+            sessionRota.delete("/destroy", {
+                "data": {
+                    "user": {
+                        "username": "Caio"
+                    },
+                    "session": {
+                        "access_token":"1093222042025481015"
+                    }                
                 }
-            },
-            "session": {
-                "acess_token":"1685615042025211215"
+            }).catch( (error) => {
+                console.log(error)
             }
-        })})
+        )})
+        app.on("will-quit", (event) => {
+            console.log("cookie")
+            // sessionRota.delete("/destroy", {
+            //     "data": {
+            //         "user": {
+            //             "username": 
+            //         }
+            //     },
+            //     "session": {
+            //         "acess_token":"1685615042025211215"
+            //     }
+            // }
+            // )
+        })
     })
