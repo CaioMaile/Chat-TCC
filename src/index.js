@@ -1,11 +1,13 @@
 const { app, BrowserWindow, ipcMain, session } = require("electron")
 const { join } = require("path")
 const axios = require("axios")
+const { access } = require("fs")
+const { url } = require("inspector")
 
 app.whenReady()
     .then (() => {
-        const user = axios.create({baseURL: "http://localhost:3000/api/v1/user"})
-        const sessionRota = axios.create({baseURL: "http://localhost:3000/api/v1/session"})
+        const user = axios.create({baseURL: "http://200.100.10/api/v1/user"})
+        const sessionRota = axios.create({baseURL: "http://200.100.0.10/api/v1/session"})
 
         const cookie = { url: 'https://www.github.com', name: 'Usuario' }
 
@@ -20,7 +22,7 @@ app.whenReady()
                 preload: join(__dirname, "preload.js")
             }       
         })
-        janela.loadFile( join(__dirname, "./public/PaginaPrincipal.html"))
+        janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
         
         ipcMain.on("maximizar", () => {
             janela.isMaximized() ? janela.unmaximize() : janela.maximize()
@@ -61,14 +63,6 @@ app.whenReady()
                     access_token: `${response.data.data.access_token}`
                 }
                 console.log(cookie)
-                session.defaultSession.cookies.get(cookie)
-                    .then( (c) => {
-                        console.log(c)
-                    })
-                    .catch( (erro) => {
-                        console.log(erro)
-                    })
-
                 janela.loadFile(join(__dirname, "./public/PaginaPrincipal.html"))
             }).catch(console.log('erro no encontro de usuario'))
         })
@@ -82,20 +76,23 @@ app.whenReady()
             else if (irPra == "Singin"){janela.loadFile("./public/PaginaSingin.html")}
         })
         ipcMain.on("Deslogar", (event, a) => {
-            console.log("cookie")
+            const c = cookie.get()
+            const username = c.username
+            const token = c.access_token
             sessionRota.delete("/destroy", {
                 params: {
                     "data": {
                         "user": {
-                            "username": "Ca"
+                            "username": username
                         },
                         "session": {
-                            "access_token":"1822013042025381516"
+                            "access_token": token
                         }                
                     }
                 }
             }).catch( (error) => {
                 console.log(error)
+                console.log(username, 'e', token)
             }
         )})
         app.on("will-quit", (event) => {
