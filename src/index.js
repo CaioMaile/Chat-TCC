@@ -4,8 +4,8 @@ const axios = require("axios")
 
 app.whenReady()
     .then (() => {
-        const user = axios.create({baseURL: "http://200.100.0.15/api/v1/user"})
-        const sessionRota = axios.create({baseURL: "http://200.100.0.15/api/v1/session"})
+        const user = axios.create({baseURL: "http://localhost:3000/api/v1/user"})
+        const sessionRota = axios.create({baseURL: "http://localhost:3000/api/v1/session"})
 
         const cookie = { url: 'https://www.github.com', name: 'Usuario' }
 
@@ -84,13 +84,15 @@ app.whenReady()
         ipcMain.on("Deslogar", (event, a) => {
             console.log("cookie")
             sessionRota.delete("/destroy", {
-                "data": {
-                    "user": {
-                        "username": "Caio"
-                    },
-                    "session": {
-                        "access_token":"1093222042025481015"
-                    }                
+                params: {
+                    "data": {
+                        "user": {
+                            "username": "Ca"
+                        },
+                        "session": {
+                            "access_token":"1822013042025381516"
+                        }                
+                    }
                 }
             }).catch( (error) => {
                 console.log(error)
