@@ -3,13 +3,12 @@ const { join } = require("path")
 const axios = require("axios")
 const { access } = require("fs")
 const { url } = require("inspector")
+const { error } = require("console")
 
 app.whenReady()
     .then (() => {
-        const user = axios.create({baseURL: "http://200.100.10/api/v1/user"})
-        const sessionRota = axios.create({baseURL: "http://200.100.0.10/api/v1/session"})
-
-        const cookie = { url: 'https://www.github.com', name: 'Usuario' }
+        const user = axios.create({baseURL: "http://localhost:3000/api/v1/user"})
+        const sessionRota = axios.create({baseURL: "http://localhost:3000/api/v1/session"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -24,6 +23,8 @@ app.whenReady()
         })
         janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
         
+        const sessao =  session.defaultSession.cookies 
+
         ipcMain.on("maximizar", () => {
             janela.isMaximized() ? janela.unmaximize() : janela.maximize()
         })
@@ -58,11 +59,22 @@ app.whenReady()
                 console.log(response.data.data)
                 
                 const cookie = { 
-                    url: 'http://www.descent.com',
+                    url: 'http://descent.com',
                     username: `${response.data.data.username}`, 
                     access_token: `${response.data.data.access_token}`
                 }
-                console.log(cookie)
+                
+                session.defaultSession.cookies.set({
+                    url: 'http://descent.com', 
+                    name: 'username', 
+                    value: cookie.username
+                })
+                session.defaultSession.cookies.set({
+                    url: 'http://descent.com', 
+                    name: 'acess_token',
+                    value: cookie.access_token
+                })
+
                 janela.loadFile(join(__dirname, "./public/PaginaPrincipal.html"))
             }).catch(console.log('erro no encontro de usuario'))
         })
@@ -76,25 +88,27 @@ app.whenReady()
             else if (irPra == "Singin"){janela.loadFile("./public/PaginaSingin.html")}
         })
         ipcMain.on("Deslogar", (event, a) => {
-            const c = cookie.get()
-            const username = c.username
-            const token = c.access_token
-            sessionRota.delete("/destroy", {
-                params: {
-                    "data": {
-                        "user": {
-                            "username": username
-                        },
-                        "session": {
-                            "access_token": token
-                        }                
+            sessao.get({url: 'http://descent.com'})
+            .then((cookies) => {
+                username = cookies.filter(cookies => cookies.name == 'username')[0].value
+                token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
+                sessionRota.delete("/destroy", {
+                    params: {
+                        "data": {
+                            "user": {
+                                "username": username
+                            },
+                            "session": {
+                                "access_token": token
+                            }                
+                        }
                     }
-                }
-            }).catch( (error) => {
-                console.log(error)
-                console.log(username, 'e', token)
-            }
-        )})
+                    }).catch( (error) => {
+                        console.log(error)
+                        console.log(username, 'e', token)
+                        console.log(cookies)
+                    })
+                })})
         app.on("will-quit", (event) => {
             console.log("cookie")
             // sessionRota.delete("/destroy", {
