@@ -5,8 +5,14 @@ contextBridge.exposeInMainWorld("electron", {
     MaximizarJanela: () => {ipcRenderer.send("maximizar")},
     FecharJanela: () => {ipcRenderer.send("fechar")},
 
+    CriarChat: (NomeChat) => {
+        ipcRenderer.send("CriarChat", NomeChat)
+    },
     AbrirChat: (codigo) => {
-        ipcRenderer.send("Abrir Chat", codigo)
+        ipcRenderer.send("AbrirChat", codigo)
+    },
+    EnviarMsg: (mensagem) => {
+        ipcRenderer.send("EnviarMsg", mensagem)
     },
     CriarUsuario: (nome, senha) => {
         ipcRenderer.send("CriarUsuario", nome, senha)
@@ -20,4 +26,5 @@ contextBridge.exposeInMainWorld("electron", {
     Deslogar: (a) => {
         ipcRenderer.send("Deslogar", a)
     }
+
 })

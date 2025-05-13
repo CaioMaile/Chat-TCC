@@ -14,7 +14,7 @@
     </div>
     <div class="principal">
         <div class="principal-barra">
-            <input type="text" placeholder="Escreva uma mensagem...">
+            <input type="text" id="EnvMsg" placeholder="Escreva uma mensagem...">
             <button onclick="electron.MinmizarJanela()"> - </button>
             <button onclick="electron.MaximizarJanela()"> o </button>
             <button onclick="electron.FecharJanela()"> x </button>
@@ -27,7 +27,10 @@
         </div>
     </div>
     <script>
-        
+        const EMsg = document.querySelector('input[id="EnvMsg"]')
+        EMsg.addEventListener("keypress", (event) => {
+            if(event.key == enter){electron.EnviarMsg(EMsg.value)}
+        })
     </script>
 </body>
 </html>

@@ -12,9 +12,9 @@
         <img src="./Imagens/figuras.png" alt="fundo">
     </div>
     <div class="menu" id="maior">
-        <input class="textoPrincipal"><button class="botaoGen"> Criar servidor </button>
+        <input class="textoPrincipal" id="CriarI"><button class="botaoGen" id="CriarB"> Criar servidor </button>
         <p></p>
-        <input class="textoPrincipal"><button class="botaoGen">Entrar no servidor </button>
+        <input class="textoPrincipal"><button class="botaoGen" id="CriarI">Entrar no servidor </button>
         <p></p>
         <button class="sair" id="SairPrincipal">Logout</button>
     </div>
@@ -23,8 +23,15 @@
     </div>
     <script>
         const SairServ = document.querySelector('button[id="SairPrincipal"]')
+        const CriarServB = document.querySelector('button[id="CriarB"]')
+        const CriarServI = document.querySelector('input[id="CriarI"]')
+
         SairServ.addEventListener('click', (event) => {
             electron.Deslogar("a")
+        })
+        CriarServB.addEventListener('click', (event) => {
+            event.preventDefault
+            electron.CriarChat(CriarServI.value)
         })
     </script>
 </body>

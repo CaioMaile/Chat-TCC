@@ -7,8 +7,8 @@ const { error } = require("console")
 
 app.whenReady()
     .then (() => {
-        const user = axios.create({baseURL: "http://localhost:3000/api/v1/user"})
-        const sessionRota = axios.create({baseURL: "http://localhost:3000/api/v1/session"})
+        const user = axios.create({baseURL: "http://200.100.04/api/v1/user"})
+        const sessionRota = axios.create({baseURL: "http://200.100.04/api/v1/session"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -22,6 +22,7 @@ app.whenReady()
             }       
         })
         janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
+
         
         const sessao =  session.defaultSession.cookies 
 
@@ -43,7 +44,6 @@ app.whenReady()
                     }
                 }
             })
-
             janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
         })
         ipcMain.on("LogarUsuario", (event, nome, senha) => {
@@ -67,21 +67,26 @@ app.whenReady()
                 session.defaultSession.cookies.set({
                     url: 'http://descent.com', 
                     name: 'username', 
-                    value: cookie.username
+                    value: cookie.username,
                 })
                 session.defaultSession.cookies.set({
                     url: 'http://descent.com', 
                     name: 'acess_token',
-                    value: cookie.access_token
+                    value: cookie.access_token,
                 })
 
                 janela.loadFile(join(__dirname, "./public/PaginaPrincipal.html"))
             }).catch(console.log('erro no encontro de usuario'))
         })
+        ipcMain.on("CriarChat", (event, NomeChat) => {
+            console.log(NomeChat)
+            janela.loadFile("./public/Chat.html")
+        })
         ipcMain.on("AbrirChat", () => {
-            const username = axios.get('')
-            const server = axios.get('')
-            janela.loadFile(join(__dirname, "./public/Chat.html"))
+
+        })
+        ipcMain.on("EnviarMsg", (mensagem) => {
+            
         })
         ipcMain.on("MudarPagina", (Event, irPra) => {
             if (irPra == "Login"){janela.loadFile("./public/PaginaLogin.html")}
@@ -102,25 +107,34 @@ app.whenReady()
                                 "access_token": token
                             }                
                         }
-                    }
-                    }).catch( (error) => {
+                    },
+                    }),janela.loadFile("./public/PaginaLogin.html").catch( (error) => {
                         console.log(error)
                         console.log(username, 'e', token)
                         console.log(cookies)
                     })
                 })})
         app.on("will-quit", (event) => {
-            console.log("cookie")
-            // sessionRota.delete("/destroy", {
-            //     "data": {
-            //         "user": {
-            //             "username": 
-            //         }
-            //     },
-            //     "session": {
-            //         "acess_token":"1685615042025211215"
-            //     }
-            // }
-            // )
+            sessao.get({url: 'http://descent.com'})
+            .then((cookies) => {
+                username = cookies.filter(cookies => cookies.name == 'username')[0].value
+                token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
+                sessionRota.delete("/destroy", {
+                    params: {
+                        "data": {
+                            "user": {
+                                "username": username
+                            },
+                            "session": {
+                                "access_token": token
+                            }                
+                        }
+                    },
+                    }),janela.loadFile("./public/PaginaLogin.html").catch( (error) => {
+                        console.log(error)
+                        console.log(username, 'e', token)
+                        console.log(cookies)
+                    })
+                }) 
         })
-    })
+})
