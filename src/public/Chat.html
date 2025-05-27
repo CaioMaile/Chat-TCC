@@ -29,17 +29,17 @@
     <script>
         const EMsg = document.querySelector('input[id="EnvMsg"]')
         const campoConversa = document.querySelector("div.principal-conversa")
-        const Chamsg = {content: EMsg.value, chat: "a" } 
+ 
 
         EMsg.addEventListener("keypress", (event) => {
             if(event.key == "Enter"){
                 event.preventDefault()
-                electron.EnviarMsg(Chamsg)
+                electron.EnviarMsg(EMsg.value)
                 EMsg.value = null
             }
         })
         setInterval(() => {
-            electron.ExibirChat("a")
+            electron.ExibirChat()
                 .then((resultados) => {
                     campoConversa.innerHTML = null
                     for (let resultado of resultados) {

@@ -4,12 +4,13 @@ const axios = require("axios")
 const { access } = require("fs")
 const { url } = require("inspector")
 const { error } = require("console")
+const { electron } = require("process")
 
 app.whenReady()
     .then (() => {
-        const user = axios.create({baseURL: "http://localhost:3000/api/v1/user"})
-        const sessionRota = axios.create({baseURL: "http://localhost:3000/api/v1/session"})
-        const Chat = axios.create({baseURL: "http://localhost:3000/api/v1/chat"})
+        const sessionRota = axios.create({baseURL: "http://200.100.0.18/api/v1/session"})
+        const Chat = axios.create({baseURL: "http://200.100.0.18/api/v1/chat"})
+        const user = axios.create({baseURL: "http://200.100.0.18/api/v1/user"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -97,7 +98,7 @@ app.whenReady()
                         "content": date.toLocaleDateString()
                     }
                 }
-                }).catch((error) => {console.log(error), console.log(date.toLocaleDateString())})
+                }).then(() => {session.defaultSession.cookies.set({url: 'http://descent.com', name: 'Chat',value: NomeChatC})}).catch((error) => {console.log(error), console.log(date.toLocaleDateString())})
             })
             janela.loadFile("./public/Chat.html")
         })
@@ -109,6 +110,7 @@ app.whenReady()
             .then((cookies) => {
                 username = cookies.filter(cookies => cookies.name == 'username')[0].value
                 token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
+                namechat = cookies.filter(cookies => cookies.name == 'Chat')[0].value
                 Chat.post("/send_content", {
                 "data":{
                     "session":{
@@ -116,34 +118,38 @@ app.whenReady()
                         "access_token": token
                     },
                     "message" : {
-                        "chat": mensagem.chat,
-                        "content": mensagem.content
+                        "chat": namechat,
+                        "content": mensagem
                     }
                 }
-                }).then((response) => {console.log("certo", mensagem.content, mensagem.chat)}).catch((error) => {console.log("errado", mensagem.content, mensagem.chat)})
+                }).then((response) => {console.log("certo", mensagem, namechat)}).catch((error) => {console.log("errado", mensagem.content, mensagem.chat)})
             })
         })
-        ipcMain.handle( "ExibirChat", async (event, NomeChatE) => {
+        ipcMain.handle( "ExibirChat", async (event) => {
             sessao.get({url: 'http://descent.com'})
             .then((cookies) => {
                 username = cookies.filter(cookies => cookies.name == 'username')[0].value
                 token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
-                 const mensagems = Chat.get("/recive_content", {
-                 //   params: {
+                namechat = cookies.filter(cookies => cookies.name == 'Chat')[0].value           
+                 const mensagems = Chat.get("/receive_content", {
+                    params: {
                     "data":{
                         "session":{
                             "username": username,
                             "access_token": token
                         },
                         "message":{
-                            "chat": NomeChatE
+                            "chat": namechat
                         }
                      }
-                  //  }
+                    }
                 }).then((response) => {
-                    console.data(response.data) 
+                    console.log(response.data) 
                     return mensagems
-                }).catch((error) => {/*console.log(error)*/})
+                }).catch((error) => {
+                    console.log(error)
+                    console.log("aa")
+                })
             })
         })
         ipcMain.on("MudarPagina", (Event, irPra) => {

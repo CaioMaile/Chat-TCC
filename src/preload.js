@@ -14,8 +14,8 @@ contextBridge.exposeInMainWorld("electron", {
     EnviarMsg: (mensagem) => {
         ipcRenderer.send("EnviarMsg", mensagem)
     },
-    ExibirChat: (NomeChatE) => {
-        return ipcRenderer.invoke("ExibirChat", NomeChatE)
+    ExibirChat: () => {
+        ipcRenderer.invoke("ExibirChat")
     },
     CriarUsuario: (nome, senha) => {
         ipcRenderer.send("CriarUsuario", nome, senha)
