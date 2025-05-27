@@ -28,9 +28,32 @@
     </div>
     <script>
         const EMsg = document.querySelector('input[id="EnvMsg"]')
+        const campoConversa = document.querySelector("div.principal-conversa")
+        const Chamsg = {content: EMsg.value, chat: "a" } 
+
         EMsg.addEventListener("keypress", (event) => {
-            if(event.key == enter){electron.EnviarMsg(EMsg.value)}
+            if(event.key == "Enter"){
+                event.preventDefault()
+                electron.EnviarMsg(Chamsg)
+                EMsg.value = null
+            }
         })
+        setInterval(() => {
+            electron.ExibirChat("a")
+                .then((resultados) => {
+                    campoConversa.innerHTML = null
+                    for (let resultado of resultados) {
+                        const conversa = document.createElement("div")
+                        conversa.setAttribute("class", "conversa")
+                        const nome = document.createElement("span")
+                        nome.innerHTML = resultado.nome
+                        conversa.appendChild(nome)
+                        conversa.append(" ")
+                        conversa.append(resultado.mensagem)
+                        campoConversa.appendChild(conversa)
+                    }
+                })
+        }, 1000)
     </script>
 </body>
 </html>

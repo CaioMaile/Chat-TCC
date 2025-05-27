@@ -7,8 +7,9 @@ const { error } = require("console")
 
 app.whenReady()
     .then (() => {
-        const user = axios.create({baseURL: "http://200.100.04/api/v1/user"})
-        const sessionRota = axios.create({baseURL: "http://200.100.04/api/v1/session"})
+        const user = axios.create({baseURL: "http://localhost:3000/api/v1/user"})
+        const sessionRota = axios.create({baseURL: "http://localhost:3000/api/v1/session"})
+        const Chat = axios.create({baseURL: "http://localhost:3000/api/v1/chat"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -78,15 +79,72 @@ app.whenReady()
                 janela.loadFile(join(__dirname, "./public/PaginaPrincipal.html"))
             }).catch(console.log('erro no encontro de usuario'))
         })
-        ipcMain.on("CriarChat", (event, NomeChat) => {
-            console.log(NomeChat)
+        ipcMain.on("CriarChat", (event, NomeChatC) => {
+            console.log(NomeChatC)
+            sessao.get({url: 'http://descent.com'})
+            .then((cookies) => {
+                username = cookies.filter(cookies => cookies.name == 'username')[0].value
+                token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
+                const date = new Date()
+                Chat.post("/send_content", {
+                "data":{
+                    "session":{
+                        "username": username,
+                        "access_token": token
+                    },
+                    "message" : {
+                        "chat": NomeChatC,
+                        "content": date.toLocaleDateString()
+                    }
+                }
+                }).catch((error) => {console.log(error), console.log(date.toLocaleDateString())})
+            })
             janela.loadFile("./public/Chat.html")
         })
         ipcMain.on("AbrirChat", () => {
 
         })
-        ipcMain.on("EnviarMsg", (mensagem) => {
-            
+        ipcMain.on("EnviarMsg", async (event, mensagem) => {
+            sessao.get({url: 'http://descent.com'})
+            .then((cookies) => {
+                username = cookies.filter(cookies => cookies.name == 'username')[0].value
+                token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
+                Chat.post("/send_content", {
+                "data":{
+                    "session":{
+                        "username": username,
+                        "access_token": token
+                    },
+                    "message" : {
+                        "chat": mensagem.chat,
+                        "content": mensagem.content
+                    }
+                }
+                }).then((response) => {console.log("certo", mensagem.content, mensagem.chat)}).catch((error) => {console.log("errado", mensagem.content, mensagem.chat)})
+            })
+        })
+        ipcMain.handle( "ExibirChat", async (event, NomeChatE) => {
+            sessao.get({url: 'http://descent.com'})
+            .then((cookies) => {
+                username = cookies.filter(cookies => cookies.name == 'username')[0].value
+                token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
+                 const mensagems = Chat.get("/recive_content", {
+                 //   params: {
+                    "data":{
+                        "session":{
+                            "username": username,
+                            "access_token": token
+                        },
+                        "message":{
+                            "chat": NomeChatE
+                        }
+                     }
+                  //  }
+                }).then((response) => {
+                    console.data(response.data) 
+                    return mensagems
+                }).catch((error) => {/*console.log(error)*/})
+            })
         })
         ipcMain.on("MudarPagina", (Event, irPra) => {
             if (irPra == "Login"){janela.loadFile("./public/PaginaLogin.html")}
