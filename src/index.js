@@ -8,9 +8,9 @@ const { electron } = require("process")
 
 app.whenReady()
     .then (() => {
-        const sessionRota = axios.create({baseURL: "http://200.100.0.18/api/v1/session"})
-        const Chat = axios.create({baseURL: "http://200.100.0.18/api/v1/chat"})
-        const user = axios.create({baseURL: "http://200.100.0.18/api/v1/user"})
+        const sessionRota = axios.create({baseURL: "http://200.100.0.20/api/v1/session"})
+        const Chat = axios.create({baseURL: "http://200.100.0.20/api/v1/chat"})
+        const user = axios.create({baseURL: "http://200.100.0.20/api/v1/user"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -144,8 +144,8 @@ app.whenReady()
                      }
                     }
                 }).then((response) => {
-                    console.log(response.data) 
-                    return mensagems
+                    const mensagens = response.data
+                    return mensagens
                 }).catch((error) => {
                     console.log(error)
                     console.log("aa")

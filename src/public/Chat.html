@@ -19,7 +19,7 @@
             <button onclick="electron.MaximizarJanela()"> o </button>
             <button onclick="electron.FecharJanela()"> x </button>
         </div>
-        <div class="principal-conversa">
+        <div id="principal-conversa" class="principal-conversa">
             <div class="conversa">
                 <span> Voluptatibus  </span>
                 Laudantium, expedita sit ipsam consequuntur dignissimos.
@@ -28,7 +28,7 @@
     </div>
     <script>
         const EMsg = document.querySelector('input[id="EnvMsg"]')
-        const campoConversa = document.querySelector("div.principal-conversa")
+        const campoConversa = document.querySelector("#principal-conversa")
  
 
         EMsg.addEventListener("keypress", (event) => {
@@ -40,8 +40,16 @@
         })
         setInterval(() => {
             electron.ExibirChat()
-                .then((resultados) => {
-                    campoConversa.innerHTML = null
+            alert("a")
+            /*for (i = 0; i < mensagens.length; ++i) {
+                let div = campoConversa.createElement('div');
+                div.innerText = data[i];
+                campoConversa.appendChild(div);
+                console.log(data[i]);
+            }*/
+                /*.then((resultados) => {
+                    querySelector(".conversa").innerHTML = "asdasd"
+                    /*campoConversa.innerHTML = null
                     for (let resultado of resultados) {
                         const conversa = document.createElement("div")
                         conversa.setAttribute("class", "conversa")
@@ -52,8 +60,8 @@
                         conversa.append(resultado.mensagem)
                         campoConversa.appendChild(conversa)
                     }
-                })
-        }, 1000)
+                })*/
+        }, 2000)
     </script>
 </body>
 </html>
