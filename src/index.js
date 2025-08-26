@@ -8,9 +8,9 @@ const { electron } = require("process")
 
 app.whenReady()
     .then (() => {
-        const sessionRota = axios.create({baseURL: "http://200.100.0.20/api/v1/session"})
-        const Chat = axios.create({baseURL: "http://200.100.0.20/api/v1/chat"})
-        const user = axios.create({baseURL: "http://200.100.0.20/api/v1/user"})
+        const sessionRota = axios.create({baseURL: "http://200.100.0.12/api/v1/session"})
+        const Chat = axios.create({baseURL: "http://200.100.0.12/api/v1/chat"})
+        const user = axios.create({baseURL: "http://200.100.0.12/api/v1/user"})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -122,7 +122,7 @@ app.whenReady()
                         "content": mensagem
                     }
                 }
-                }).then((response) => {console.log("certo", mensagem, namechat)}).catch((error) => {console.log("errado", mensagem.content, mensagem.chat)})
+                }).then((response) => {console.log("certo", mensagems, namechat)}).catch((error) => {console.log("errado", mensagem.content, mensagem.chat)})
             })
         })
         ipcMain.handle( "ExibirChat", async (event) => {
@@ -131,7 +131,8 @@ app.whenReady()
                 username = cookies.filter(cookies => cookies.name == 'username')[0].value
                 token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
                 namechat = cookies.filter(cookies => cookies.name == 'Chat')[0].value           
-                 const mensagems = Chat.get("/receive_content", {
+                //  const mensagens = 
+                Chat.get("/receive_content", {
                     params: {
                     "data":{
                         "session":{
@@ -144,8 +145,10 @@ app.whenReady()
                      }
                     }
                 }).then((response) => {
-                    const mensagens = response.data
-                    return mensagens
+            
+                    console.log('START -> ', response.data, "-> END")
+                    // return mensagens
+                    return response.data[5]
                 }).catch((error) => {
                     console.log(error)
                     console.log("aa")

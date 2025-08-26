@@ -39,8 +39,9 @@
             }
         })
         setInterval(() => {
-            electron.ExibirChat()
-            alert("a")
+            data = electron.ExibirChat()
+            alert(data)
+            //document.querySelector("#principal-conversa").innerHTML = data[0].chat
             /*for (i = 0; i < mensagens.length; ++i) {
                 let div = campoConversa.createElement('div');
                 div.innerText = data[i];
