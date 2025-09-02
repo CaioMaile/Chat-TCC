@@ -8,9 +8,10 @@ const { electron } = require("process")
 
 app.whenReady()
     .then (() => {
-        const sessionRota = axios.create({baseURL: "http://200.100.0.12/api/v1/session"})
-        const Chat = axios.create({baseURL: "http://200.100.0.12/api/v1/chat"})
-        const user = axios.create({baseURL: "http://200.100.0.12/api/v1/user"})
+        const ipSession = "http://200.100.0.20"
+        const sessionRota = axios.create({baseURL: `${ipSession}/api/v1/session`})
+        const Chat = axios.create({baseURL: `${ipSession}/api/v1/chat`})
+        const user = axios.create({baseURL: `${ipSession}/api/v1/user`})
 
         const janela = new BrowserWindow ({
             autoHideMenuBa: true,
@@ -24,6 +25,7 @@ app.whenReady()
             }       
         })
         janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
+        janela.webContents.openDevTools();
 
         
         const sessao =  session.defaultSession.cookies 
@@ -125,35 +127,40 @@ app.whenReady()
                 }).then((response) => {console.log("certo", mensagems, namechat)}).catch((error) => {console.log("errado", mensagem.content, mensagem.chat)})
             })
         })
+        let result = { 'messages' : [] }
         ipcMain.handle( "ExibirChat", async (event) => {
             sessao.get({url: 'http://descent.com'})
-            .then((cookies) => {
-                username = cookies.filter(cookies => cookies.name == 'username')[0].value
-                token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
-                namechat = cookies.filter(cookies => cookies.name == 'Chat')[0].value           
-                //  const mensagens = 
-                Chat.get("/receive_content", {
-                    params: {
-                    "data":{
-                        "session":{
-                            "username": username,
-                            "access_token": token
-                        },
-                        "message":{
-                            "chat": namechat
+                .then((cookies) => {
+                    username = cookies.filter(cookies => cookies.name == 'username')[0].value
+                    token = cookies.filter(cookies => cookies.name == 'acess_token')[0].value
+                    namechat = cookies.filter(cookies => cookies.name == 'Chat')[0].value           
+                    //  const mensagens = 
+                    Chat.get("/receive_content", {
+                        params: {
+                        "data":{
+                            "session":{
+                                "username": username,
+                                "access_token": token
+                            },
+                            "message":{
+                                "chat": namechat
+                            }
                         }
-                     }
-                    }
-                }).then((response) => {
-            
-                    console.log('START -> ', response.data, "-> END")
-                    // return mensagens
-                    return response.data[5]
-                }).catch((error) => {
-                    console.log(error)
-                    console.log("aa")
+                        }
+                    }).then((response) => {
+                        // console.log('START -> ', response.data[0], "-> END")
+                        //result['messages'] = response.data]
+                        //console.log(response.data[2])
+                        //console.log("PRIMEIRO")
+                        result['messages'] = response.data
+                        // return response
+                    }).catch((error) => {
+                        console.log(error)
+                    })
                 })
-            })
+            //console.log(result)
+            //console.log("AQUI")
+            return result
         })
         ipcMain.on("MudarPagina", (Event, irPra) => {
             if (irPra == "Login"){janela.loadFile("./public/PaginaLogin.html")}

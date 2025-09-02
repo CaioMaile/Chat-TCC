@@ -38,15 +38,21 @@
                 EMsg.value = null
             }
         })
-        setInterval(() => {
-            data = electron.ExibirChat()
-            alert(data)
-            //document.querySelector("#principal-conversa").innerHTML = data[0].chat
-            /*for (i = 0; i < mensagens.length; ++i) {
+        setInterval(async () => {
+            var result = await electron.ExibirChat();
+            //console.log(result.messages)
+            function getName(item){return[item.user_id].join('');}
+            function getMsg(item){return[item.content].join('');}
+            function organizado(){
+                document.querySelector("#principal-conversa").innerHTML = result.messages.map((msg) => {
+                    return `<div class="conversa"><span>${getName(msg)}</span>${getMsg(msg)}</div>`;}).join('')
+            }
+            organizado()
+            /*for (i = 0; i < result.length; ++i) {
                 let div = campoConversa.createElement('div');
-                div.innerText = data[i];
+                div.innerText = result[i];
                 campoConversa.appendChild(div);
-                console.log(data[i]);
+                //console.log(data[i]);
             }*/
                 /*.then((resultados) => {
                     querySelector(".conversa").innerHTML = "asdasd"
@@ -63,6 +69,8 @@
                     }
                 })*/
         }, 2000)
+    
+        
     </script>
 </body>
 </html>
