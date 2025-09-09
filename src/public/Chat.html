@@ -29,8 +29,9 @@
     <script>
         const EMsg = document.querySelector('input[id="EnvMsg"]')
         const campoConversa = document.querySelector("#principal-conversa")
- 
+        const sair = document.querySelector('button[id="sairChat"]')
 
+        sair.addEventListener("click", (event) => {electron.MudarPagina("Principal")})
         EMsg.addEventListener("keypress", (event) => {
             if(event.key == "Enter"){
                 event.preventDefault()

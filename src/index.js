@@ -8,7 +8,7 @@ const { electron } = require("process")
 
 app.whenReady()
     .then (() => {
-        const ipSession = "http://200.100.0.20"
+        const ipSession = "http://localhost:3000"
         const sessionRota = axios.create({baseURL: `${ipSession}/api/v1/session`})
         const Chat = axios.create({baseURL: `${ipSession}/api/v1/chat`})
         const user = axios.create({baseURL: `${ipSession}/api/v1/user`})
@@ -25,7 +25,7 @@ app.whenReady()
             }       
         })
         janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
-        janela.webContents.openDevTools();
+        //janela.webContents.openDevTools();
 
         
         const sessao =  session.defaultSession.cookies 
@@ -165,6 +165,7 @@ app.whenReady()
         ipcMain.on("MudarPagina", (Event, irPra) => {
             if (irPra == "Login"){janela.loadFile("./public/PaginaLogin.html")}
             else if (irPra == "Singin"){janela.loadFile("./public/PaginaSingin.html")}
+            else if (irPra == "Principal"){janela.loadFile("./public/PaginaPrincipal.html")}
         })
         ipcMain.on("Deslogar", (event, a) => {
             sessao.get({url: 'http://descent.com'})
