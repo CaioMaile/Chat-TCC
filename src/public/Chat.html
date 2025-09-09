@@ -42,34 +42,14 @@
         setInterval(async () => {
             var result = await electron.ExibirChat();
             //console.log(result.messages)
-            function getName(item){return[item.user_id].join('');}
+            function getName(item){return[item.username].join('');}
             function getMsg(item){return[item.content].join('');}
             function organizado(){
                 document.querySelector("#principal-conversa").innerHTML = result.messages.map((msg) => {
-                    return `<div class="conversa"><span>${getName(msg)}</span>${getMsg(msg)}</div>`;}).join('')
+                    return `<div class="conversa"><span>${getName(msg)}: </span>${getMsg(msg)}</div>`;}).join('')
             }
             organizado()
-            /*for (i = 0; i < result.length; ++i) {
-                let div = campoConversa.createElement('div');
-                div.innerText = result[i];
-                campoConversa.appendChild(div);
-                //console.log(data[i]);
-            }*/
-                /*.then((resultados) => {
-                    querySelector(".conversa").innerHTML = "asdasd"
-                    /*campoConversa.innerHTML = null
-                    for (let resultado of resultados) {
-                        const conversa = document.createElement("div")
-                        conversa.setAttribute("class", "conversa")
-                        const nome = document.createElement("span")
-                        nome.innerHTML = resultado.nome
-                        conversa.appendChild(nome)
-                        conversa.append(" ")
-                        conversa.append(resultado.mensagem)
-                        campoConversa.appendChild(conversa)
-                    }
-                })*/
-        }, 2000)
+        }, 1000)
     
         
     </script>

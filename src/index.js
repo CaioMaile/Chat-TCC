@@ -8,7 +8,8 @@ const { electron } = require("process")
 
 app.whenReady()
     .then (() => {
-        const ipSession = "http://localhost:3000"
+        // const ipSession = "http://localhost:3000"
+        const ipSession = "http://200.100.0.13:80"
         const sessionRota = axios.create({baseURL: `${ipSession}/api/v1/session`})
         const Chat = axios.create({baseURL: `${ipSession}/api/v1/chat`})
         const user = axios.create({baseURL: `${ipSession}/api/v1/user`})
@@ -25,7 +26,7 @@ app.whenReady()
             }       
         })
         janela.loadFile( join(__dirname, "./public/PaginaLogin.html"))
-        //janela.webContents.openDevTools();
+        // janela.webContents.openDevTools();
 
         
         const sessao =  session.defaultSession.cookies 
@@ -160,6 +161,7 @@ app.whenReady()
                 })
             //console.log(result)
             //console.log("AQUI")
+            // console.log(result.messages[2])
             return result
         })
         ipcMain.on("MudarPagina", (Event, irPra) => {
